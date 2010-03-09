@@ -27,12 +27,13 @@ private:
 	QRectF* rects;
 	
 	int nBlocks;
-	
 	int xBlocks;
-	
-	void onStart();
-	
 	float blockSize;
+	
+	void onStarting();
+	void onResized();
+	
+	void setupBlocks();
 	
 public:
 	

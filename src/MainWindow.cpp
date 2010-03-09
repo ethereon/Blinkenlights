@@ -12,14 +12,37 @@
  */
 
 #include "MainWindow.h"
+#include "CheckerboardGlyph.h"
+#include "RectGlyph.h"
+#include <vector>
 
+using namespace std;
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 	
 	
 	presenter = new Presenter(this);
 	
+	int frequencies[] = {5, 1};
+	
+	int glyphCount = 2;
+	
+	CheckerboardGlyph* boards = new CheckerboardGlyph[glyphCount];
+
+	vector<Glyph*>* glyphs = new vector<Glyph*>;
+	
+	for(int i=0;i<glyphCount; ++i) {
+		
+		boards[i].setFrequency(frequencies[i]);
+		glyphs->push_back(&(boards[i]));
+
+	}
+	
+	presenter->setGlyphs(glyphs);
+	
 	this->setCentralWidget(presenter);
+	
+	presenter->start();
 
 	isFullscreen = false;
 	

@@ -13,6 +13,9 @@
 
 
 #include "Presenter.h"
+#include <assert.h>
+
+using namespace std;
 
 Presenter::Presenter(QWidget* parent) : QGLWidget(parent) {
 	
@@ -20,23 +23,26 @@ Presenter::Presenter(QWidget* parent) : QGLWidget(parent) {
 
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(render()));
-	timer->start(10);
 	
+
 	
-	glyph.setFrequency(7.0);
-	glyph.setDimensions(0, 0, 500, 500);
-	glyph.start();
-	
+	glyphs = NULL;
+	spacing = 2;
+
 }
 
 Presenter::~Presenter() {
 	
+}
 
+void Presenter::setGlyphs(std::vector<Glyph*>* argGlyphs) {
+	
+	this->glyphs = argGlyphs;
+	
 }
 
 void Presenter::render() {
 	
-
 	repaint();
 	
 }
@@ -44,7 +50,50 @@ void Presenter::render() {
 void Presenter::resizeGL(int width, int height) {
 	
 	setFixedSize(width,height);
+	
+	if(glyphs!=NULL)
+		layoutGlyphs();
+	
+}
+
+void Presenter::start() {
+	
+	
+	assert(glyphs!=NULL);
+	
 	layoutGlyphs();
+	
+	int n = glyphs->size();
+	
+	for(int i=0; i<n; ++i)
+		(*glyphs)[i]->start();
+
+	
+	timer->start(10);	
+	
+}
+
+void Presenter::layoutGlyphs() {
+
+	assert(glyphs!=NULL);
+
+	
+	int w = this->width();
+	int h = this->height();
+	
+	int n = glyphs->size();
+	
+	int glyphWidth = ((w-spacing)/n)-spacing;
+	int glyphHeight = h - (2*spacing);
+	
+	for(int i=0; i<n; ++i) {
+		
+		int x = glyphWidth*i;
+		
+		(*glyphs)[i]->setDimensions(x+spacing,spacing,glyphWidth, glyphHeight);
+		
+	}
+	
 	
 }
 
@@ -57,7 +106,12 @@ void Presenter::paintEvent(QPaintEvent* /* event */)
 	painter.setPen(Qt::white);
 	painter.setBrush(Qt::white);
 	
-	glyph.render(&painter);
+	int n = glyphs->size();
+	
+	for(int i=0;i<n; ++i) 
+		(*glyphs)[i]->render(&painter);
+
+
 	
 	painter.end();
 	

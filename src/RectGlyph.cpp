@@ -15,7 +15,7 @@
 #include "RectGlyph.h"
 
 
-void RectGlyph::onStart() {
+void RectGlyph::onStarting() {
 	
 	rectangle.setRect(rX,rY,rWidth,rHeight);
 	

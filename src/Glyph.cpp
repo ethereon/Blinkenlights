@@ -51,12 +51,13 @@ void Glyph::setDimensions(double argX, double argY, double argW, double argH) {
 	rWidth = argW;
 	rHeight = argH;
 	
+	onResized();
 }
 
 
 void Glyph::start() {
 	
-	this->onStart();
+	this->onStarting();
 	this->timer.start();
 	
 }

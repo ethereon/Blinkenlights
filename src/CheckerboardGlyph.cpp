@@ -29,7 +29,20 @@ CheckerboardGlyph::~CheckerboardGlyph() {
 }
 
 
-void CheckerboardGlyph::onStart() {
+void CheckerboardGlyph::onStarting() {
+	
+	setupBlocks();
+	
+}
+
+void CheckerboardGlyph::setupBlocks() {
+	
+	bool startTimer = false;
+	
+	if(timer.isActive())  {
+		startTimer = true;
+		timer.stop();
+	}
 	
 	if(rects!=NULL)
 		delete [] rects;
@@ -45,15 +58,22 @@ void CheckerboardGlyph::onStart() {
 	for(int i=0;i<nBlocks; ++i) {
 		
 		int vert = ((int)(i/xBlocks));
-		int horiz = i%xBlocks;
+		int horiz = (i%xBlocks);
 		
-		rects[i].setRect(horiz*blockSize, vert*blockSize, blockSize, blockSize);
+		rects[i].setRect(rX+(horiz*blockSize), rY+(vert*blockSize), blockSize, blockSize);
 		
 	}
 	
+	if(startTimer)
+		timer.start();
 	
 }
 
+void CheckerboardGlyph::onResized() {
+	
+	setupBlocks();
+	
+}
 
 void CheckerboardGlyph::render(QPainter* painter) {
 	

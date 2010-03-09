@@ -16,8 +16,11 @@
 
 #include <QtGui>
 #include <QGLWidget>
-#include "RectGlyph.h"
-#include "CheckerboardGlyph.h"
+#include "GlyphType.h"
+#include "Glyph.h"
+#include <vector>
+
+
 
 class Presenter : public QGLWidget {
 	
@@ -32,17 +35,26 @@ public slots:
 	
 private:
 	
+	
 	QTimer* timer;
+	std::vector<Glyph*>* glyphs;
+	int spacing;
 	
 	void paintEvent(QPaintEvent *event);
 	void resizeGL(int width, int height);
-	CheckerboardGlyph glyph;
+	void layoutGlyphs();
+	
+
 	
 public:
 	
 	Presenter(QWidget* parent = 0);
 	~Presenter();
 	
+	void start();
+	void stop();
+	
+	void setGlyphs(std::vector<Glyph*>* argGlyphs);
 	
 	
 };

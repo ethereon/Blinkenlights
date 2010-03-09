@@ -25,7 +25,7 @@ private:
 	
 	QRectF rectangle;
 	
-	void onStart();
+	void onStarting();
 	
 public:
 	

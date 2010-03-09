@@ -31,7 +31,8 @@ protected:
 	
 	double rX,rY,rWidth,rHeight;
 	
-	virtual void onStart()=0;
+	virtual void onStarting() {};
+	virtual void onResized() {};
 	
 public slots:
 	
