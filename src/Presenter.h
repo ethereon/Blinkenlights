@@ -16,7 +16,6 @@
 
 #include <QtGui>
 #include <QGLWidget>
-#include "GlyphType.h"
 #include "Glyph.h"
 #include <vector>
 

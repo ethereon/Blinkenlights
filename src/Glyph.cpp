@@ -44,7 +44,7 @@ void Glyph::setFrequency(double f)
 }
 
 
-void Glyph::setDimensions(double argX, double argY, double argW, double argH) {
+void Glyph::setDimensions(int argX, int argY, int argW, int argH) {
 	
 	rX = argX;
 	rY = argY;

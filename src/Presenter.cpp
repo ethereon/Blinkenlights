@@ -47,10 +47,8 @@ void Presenter::render() {
 	
 }
 
-void Presenter::resizeGL(int width, int height) {
-	
-	setFixedSize(width,height);
-	
+void Presenter::resizeGL(int /* width */, int /* height */) {
+		
 	if(glyphs!=NULL)
 		layoutGlyphs();
 	

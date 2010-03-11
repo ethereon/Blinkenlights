@@ -28,7 +28,7 @@ private:
 	
 	int nBlocks;
 	int xBlocks;
-	float blockSize;
+	int blockSize;
 	
 	void onStarting();
 	void onResized();

@@ -29,7 +29,7 @@ protected:
 	
 	bool state;
 	
-	double rX,rY,rWidth,rHeight;
+	int rX,rY,rWidth,rHeight;
 	
 	virtual void onStarting() {};
 	virtual void onResized() {};
@@ -49,7 +49,7 @@ public:
 	void start();
 	void stop();
 	
-	void setDimensions(double argX, double argY, double argW, double argH); 
+	void setDimensions(int argX, int argY, int argW, int argH); 
 	
 	virtual void render(QPainter* painter) = 0;
 

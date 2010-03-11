@@ -13,6 +13,7 @@
 
 
 #include "CheckerboardGlyph.h"
+#include <cmath>
 
 
 CheckerboardGlyph::CheckerboardGlyph(QObject* parent) : Glyph(parent) {
@@ -46,21 +47,25 @@ void CheckerboardGlyph::setupBlocks() {
 	
 	if(rects!=NULL)
 		delete [] rects;
-
-	this->xBlocks = (int)(rWidth / blockSize);
 	
-	int yBlocks = (int)(rHeight / blockSize);
+	this->xBlocks = rWidth/blockSize;
+	
+	int yBlocks = rHeight/blockSize;
 	
 	nBlocks = xBlocks*yBlocks;
 	
 	rects = new QRectF[nBlocks];
 	
+	//Distribute any extra space evenly around the rect
+	int xSpacing = (rWidth-(xBlocks*blockSize))/2;
+	int ySpacing = (rHeight-(yBlocks*blockSize))/2;
+	
 	for(int i=0;i<nBlocks; ++i) {
 		
 		int vert = ((int)(i/xBlocks));
 		int horiz = (i%xBlocks);
-		
-		rects[i].setRect(rX+(horiz*blockSize), rY+(vert*blockSize), blockSize, blockSize);
+				
+		rects[i].setRect(xSpacing+rX+(horiz*blockSize), ySpacing+rY+(vert*blockSize), blockSize, blockSize);
 		
 	}
 	
