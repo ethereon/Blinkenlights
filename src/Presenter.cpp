@@ -15,9 +15,27 @@
 #include "Presenter.h"
 #include <assert.h>
 
+#ifdef __APPLE__
+
+#include <OpenGL/OpenGL.h>
+#include <OpenGL/gl.h>
+
+#endif
+
 using namespace std;
 
 Presenter::Presenter(QWidget* parent) : QGLWidget(parent) {
+
+	makeCurrent();
+	
+#ifdef __APPLE__
+	
+	GLint sync = 1;
+	CGLContextObj ctx = CGLGetCurrentContext();
+	CGLSetParameter (ctx, kCGLCPSwapInterval, &sync);
+	
+	
+#endif
 	
 	setAutoFillBackground(false);
 

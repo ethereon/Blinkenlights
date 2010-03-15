@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 	
 	presenter = new Presenter(this);
 	
-	int frequencies[] = {5, 1};
+	int frequencies[] = {6, 10};
 	
 	int glyphCount = 2;
 	
