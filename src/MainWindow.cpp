@@ -20,29 +20,28 @@ using namespace std;
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 	
-	
-	presenter = new Presenter(this);
-	
-	int frequencies[] = {6, 10};
+		
+	double frequencies[] = {7.5,6};
 	
 	int glyphCount = 2;
 	
 	CheckerboardGlyph* boards = new CheckerboardGlyph[glyphCount];
 
-	vector<Glyph*>* glyphs = new vector<Glyph*>;
+	vector<Glyph*> glyphs;
 	
 	for(int i=0;i<glyphCount; ++i) {
 		
 		boards[i].setFrequency(frequencies[i]);
-		glyphs->push_back(&(boards[i]));
+		glyphs.push_back(&(boards[i]));
 
 	}
 	
-	presenter->setGlyphs(glyphs);
+	presenter.setGlyphs(glyphs);
 	
-	this->setCentralWidget(presenter);
+	this->setCentralWidget(&renderingSurface);
 	
-	presenter->start();
+	presenter.setRenderingSurface(&renderingSurface);
+	presenter.start();//&renderingSurface);
 
 	isFullscreen = false;
 	

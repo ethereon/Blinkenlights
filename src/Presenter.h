@@ -15,46 +15,44 @@
 #define __PRESENTER_H__
 
 #include <QtGui>
-#include <QGLWidget>
 #include "Glyph.h"
 #include <vector>
 
+class RenderingSurface;
 
-
-class Presenter : public QGLWidget {
+class Presenter : public QThread {
 	
 	
 	Q_OBJECT
 	
-	
-public slots:
-
-	void render();
-	
-	
 private:
 	
+	volatile bool isStopped;
 	
-	QTimer* timer;
-	std::vector<Glyph*>* glyphs;
+	std::vector<Glyph*> glyphs;
 	int spacing;
 	
-	void paintEvent(QPaintEvent *event);
-	void resizeGL(int width, int height);
-	void layoutGlyphs();
+	RenderingSurface* renderingSurface;
 	
-
+	
+signals:
+	
+	void glyphStateChanged();
+	
 	
 public:
 	
 	Presenter(QWidget* parent = 0);
 	~Presenter();
-	
-	void start();
+
+	void run();
 	void stop();
 	
-	void setGlyphs(std::vector<Glyph*>* argGlyphs);
-	
+	void setRenderingSurface(RenderingSurface* argSurface);
+	void setGlyphs(const std::vector<Glyph*> &argGlyphs);
+	void setSpacing(int argSpacing);
+	void layoutGlyphs(int w, int h);
+	void renderGlyphs(QPainter& painter);
 	
 };
 

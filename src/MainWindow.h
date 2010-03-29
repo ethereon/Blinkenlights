@@ -17,6 +17,7 @@
 
 #include <QtGui>
 #include "Presenter.h"
+#include "RenderingSurface.h"
 
 class MainWindow : public QMainWindow {
 	
@@ -25,7 +26,9 @@ class MainWindow : public QMainWindow {
 	
 private:
 	
-	Presenter* presenter;
+	Presenter presenter;
+	
+	RenderingSurface renderingSurface;
 	
 	bool isFullscreen;
 

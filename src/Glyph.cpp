@@ -13,6 +13,7 @@
 
 
 #include "Glyph.h"
+#include <sys/time.h>
 
 Glyph::Glyph(QObject* parent) : QObject(parent)
 { 
@@ -30,6 +31,16 @@ Glyph::~Glyph() {
 
 void Glyph::toggleState() {
 	
+	timeval tv;
+	gettimeofday(&tv, NULL);
+	suseconds_t uSecs = tv.tv_usec;
+	
+	suseconds_t delta = uSecs - markTime;
+	markTime = uSecs;
+	
+	printf("%f:%d\n", frequency, delta);
+	
+	
 	state = !state;
 	
 }
@@ -37,9 +48,11 @@ void Glyph::toggleState() {
 void Glyph::setFrequency(double f) 
 {
 	
-	this->halfPeriod = (1./(2*f))*1000;
+	this->frequency = f;
 	
-	this->timer.setInterval(halfPeriod);
+	this->transitionInterval = (1./(2*f))*1000000;
+	
+//	this->timer.setInterval(halfPeriod);
 
 }
 
@@ -57,14 +70,20 @@ void Glyph::setDimensions(int argX, int argY, int argW, int argH) {
 
 void Glyph::start() {
 	
+	timeval tv;
+	gettimeofday(&tv,NULL);
+	markTime = tv.tv_usec;
+	
 	this->onStarting();
-	this->timer.start();
+	//this->timer.start();
+	
+	
 	
 }
 
 void Glyph::stop() {
 	
-	this->timer.stop();
+//	this->timer.stop();
 
 }
 

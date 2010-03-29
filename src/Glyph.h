@@ -15,6 +15,8 @@
 #define __GLYPH_H__
 
 #include <QtGui>
+#include <time.h>
+
 
 class Glyph : public QObject {
 	
@@ -23,16 +25,21 @@ class Glyph : public QObject {
 	
 protected:
 	
-	double halfPeriod;
+	double transitionInterval;
+	
+	double frequency;
 	
 	QTimer timer;
 	
 	bool state;
 	
+	
 	int rX,rY,rWidth,rHeight;
 	
 	virtual void onStarting() {};
 	virtual void onResized() {};
+	
+	suseconds_t markTime;
 	
 public slots:
 	
@@ -45,6 +52,8 @@ public:
 	Glyph(QObject* Parent = 0);
 	~Glyph();
 		
+	double getFrequency() const { return frequency; }
+	double getTransitionInterval() const { return transitionInterval; }
 	void setFrequency(double f);
 	void start();
 	void stop();
@@ -52,6 +61,8 @@ public:
 	void setDimensions(int argX, int argY, int argW, int argH); 
 	
 	virtual void render(QPainter* painter) = 0;
+	
+	bool operator <(const Glyph& v) { return frequency < v.getFrequency(); }
 
 };
 		

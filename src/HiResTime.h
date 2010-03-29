@@ -1,7 +1,7 @@
 /*
  ================================================================
  
- Rectangular Glyph
+ High Resolution Time Routines
  Blinkenlights / The Myelin Project
  
  Copyright (C) 2010 Saumitro Dasgupta.
@@ -11,25 +11,12 @@
  ================================================================
  */
 
+#ifndef __HI_RES_TIME_H__
+#define __HI_RES_TIME_H__
 
-#ifndef __RECT_GLYPH_H__
-#define __RECT_GLYPH_H__
+typedef unsigned long long int HIRESTIME;
 
-#include "Glyph.h"
+void getCurrentTime(HIRESTIME* t);
 
-class RectGlyph : public Glyph {
-	
-	Q_OBJECT
-	
-private:
-	
-	QRectF rectangle;
-	
-	void onResized();
-	
-public:
-	
-	void render(QPainter* painter);
-};
 
 #endif

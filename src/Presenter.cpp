@@ -13,92 +13,91 @@
 
 
 #include "Presenter.h"
+#include <algorithm>
 #include <assert.h>
-
-#ifdef __APPLE__
-
-#include <OpenGL/OpenGL.h>
-#include <OpenGL/gl.h>
-
-#endif
+#include "RenderingSurface.h"
+#include "HiResTime.h"
 
 using namespace std;
 
-Presenter::Presenter(QWidget* parent) : QGLWidget(parent) {
-
-	makeCurrent();
+Presenter::Presenter(QWidget* parent) : QThread(parent) {
 	
-#ifdef __APPLE__
-	
-	GLint sync = 1;
-	CGLContextObj ctx = CGLGetCurrentContext();
-	CGLSetParameter (ctx, kCGLCPSwapInterval, &sync);
-	
-	
-#endif
-	
-	setAutoFillBackground(false);
-
-	timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(render()));
-	
-
-	
-	glyphs = NULL;
 	spacing = 2;
 
+	renderingSurface = NULL;
+	
 }
 
 Presenter::~Presenter() {
 	
 }
 
-void Presenter::setGlyphs(std::vector<Glyph*>* argGlyphs) {
+void Presenter::setGlyphs(const vector<Glyph*> &argGlyphs) {
 	
 	this->glyphs = argGlyphs;
 	
 }
 
-void Presenter::render() {
+
+void Presenter::setRenderingSurface(RenderingSurface* argSurface) {
 	
-	repaint();
+	
+	this->renderingSurface = argSurface;
 	
 }
 
-void Presenter::resizeGL(int /* width */, int /* height */) {
+void Presenter::run() {
+
+	int n = glyphs.size();
+	
+	assert(n!=0);
+	assert(renderingSurface!=NULL);
+	
+	renderingSurface->setPresenter(this);
 		
-	if(glyphs!=NULL)
-		layoutGlyphs();
-	
-}
-
-void Presenter::start() {
-	
-	
-	assert(glyphs!=NULL);
-	
-	layoutGlyphs();
-	
-	int n = glyphs->size();
-	
 	for(int i=0; i<n; ++i)
-		(*glyphs)[i]->start();
+		glyphs[i]->start();
+
+	isStopped = false;
+	
+	connect(this, SIGNAL(glyphStateChanged()), renderingSurface, SLOT(repaint()));
+	
+	HIRESTIME* epochs = new HIRESTIME[n];
+	getCurrentTime(&(epochs[0]));
+	
+	for(int i=1;i<n;epochs[i++] = epochs[0]) ;
+	
+	while(!isStopped) {
+		
+		HIRESTIME currentTime;
+		getCurrentTime(&currentTime);		
+				
+		for(int i=0;i<n;++i) {
+			
+			HIRESTIME delay = currentTime - epochs[i];
+			
+			if(delay>glyphs[i]->getTransitionInterval()) {
+				
+				glyphs[i]->toggleState();
+				epochs[i] = currentTime;
+				emit glyphStateChanged();
+			}
+			
+		}
+		
+	}
 
 	
-	timer->start(10);	
+	delete [] epochs;
 	
 }
 
-void Presenter::layoutGlyphs() {
+void Presenter::layoutGlyphs(int w, int h) {
 
-	assert(glyphs!=NULL);
+	int n = glyphs.size();
+	
+	assert(n!=0);
 
-	
-	int w = this->width();
-	int h = this->height();
-	
-	int n = glyphs->size();
-	
 	int glyphWidth = ((w-spacing)/n)-spacing;
 	int glyphHeight = h - (2*spacing);
 	
@@ -106,31 +105,20 @@ void Presenter::layoutGlyphs() {
 		
 		int x = glyphWidth*i;
 		
-		(*glyphs)[i]->setDimensions(x+spacing,spacing,glyphWidth, glyphHeight);
+		glyphs[i]->setDimensions(x+spacing,spacing,glyphWidth, glyphHeight);
 		
 	}
 	
 	
 }
 
-void Presenter::paintEvent(QPaintEvent* /* event */)
+void Presenter::renderGlyphs(QPainter& painter)
 {
-	
-	QPainter painter;
-	painter.begin(this);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	painter.setPen(Qt::white);
-	painter.setBrush(Qt::white);
-	
-	int n = glyphs->size();
+		
+	int n = glyphs.size();
 	
 	for(int i=0;i<n; ++i) 
-		(*glyphs)[i]->render(&painter);
-
-
-	
-	painter.end();
-	
+		glyphs[i]->render(&painter);
 	
 }
 
