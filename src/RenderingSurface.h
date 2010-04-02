@@ -16,7 +16,7 @@
 
 #include <QtGui>
 #include <QGLWidget>
-#include <Presenter.h>
+#include "Presenter.h"
 
 class RenderingSurface : public QGLWidget {
 	

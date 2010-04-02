@@ -29,8 +29,6 @@ protected:
 	
 	double frequency;
 	
-	QTimer timer;
-	
 	bool state;
 	
 	
@@ -38,8 +36,6 @@ protected:
 	
 	virtual void onStarting() {};
 	virtual void onResized() {};
-	
-	suseconds_t markTime;
 	
 public slots:
 	

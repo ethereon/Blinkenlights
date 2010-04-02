@@ -38,13 +38,6 @@ void CheckerboardGlyph::onStarting() {
 
 void CheckerboardGlyph::setupBlocks() {
 	
-	bool startTimer = false;
-	
-	if(timer.isActive())  {
-		startTimer = true;
-		timer.stop();
-	}
-	
 	if(rects!=NULL)
 		delete [] rects;
 	
@@ -68,9 +61,6 @@ void CheckerboardGlyph::setupBlocks() {
 		rects[i].setRect(xSpacing+rX+(horiz*blockSize), ySpacing+rY+(vert*blockSize), blockSize, blockSize);
 		
 	}
-	
-	if(startTimer)
-		timer.start();
 	
 }
 
