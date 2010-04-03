@@ -14,6 +14,7 @@
 #include "MainWindow.h"
 #include "CheckerboardGlyph.h"
 #include "RectGlyph.h"
+
 #include <vector>
 
 using namespace std;
@@ -21,11 +22,11 @@ using namespace std;
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 	
 		
-	double frequencies[] = {7.5,6};
+	double frequencies[] = {7.5,6,10,14};
 	
-	int glyphCount = 2;
+	int glyphCount = 4;
 	
-	CheckerboardGlyph* boards = new CheckerboardGlyph[glyphCount];
+	CheckerboardGlyph* boards = new CheckerboardGlyph[glyphCount];		
 
 	vector<Glyph*> glyphs;
 	
@@ -36,6 +37,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
 	}
 	
+	presenter.setLayoutEngine(&layoutEngine);
 	presenter.setGlyphs(glyphs);
 	
 	this->setCentralWidget(&renderingSurface);

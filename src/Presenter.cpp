@@ -22,9 +22,8 @@ using namespace std;
 
 Presenter::Presenter(QWidget* parent) : QThread(parent) {
 	
-	spacing = 2;
-
 	renderingSurface = NULL;
+	layoutEngine = NULL;
 	
 }
 
@@ -46,12 +45,19 @@ void Presenter::setRenderingSurface(RenderingSurface* argSurface) {
 	
 }
 
+void Presenter::setLayoutEngine(LayoutEngine* engine) {
+	
+	layoutEngine = engine;
+	
+}
+
 void Presenter::run() {
 
 	int n = glyphs.size();
 	
 	assert(n!=0);
 	assert(renderingSurface!=NULL);
+	assert(layoutEngine!=NULL);
 	
 	renderingSurface->setPresenter(this);
 		
@@ -92,25 +98,6 @@ void Presenter::run() {
 	
 }
 
-void Presenter::layoutGlyphs(int w, int h) {
-
-	int n = glyphs.size();
-	
-	assert(n!=0);
-
-	int glyphWidth = ((w-spacing)/n)-spacing;
-	int glyphHeight = h - (2*spacing);
-	
-	for(int i=0; i<n; ++i) {
-		
-		int x = glyphWidth*i;
-		
-		glyphs[i]->setDimensions(x+spacing,spacing,glyphWidth, glyphHeight);
-		
-	}
-	
-	
-}
 
 void Presenter::renderGlyphs(QPainter& painter)
 {
@@ -122,5 +109,12 @@ void Presenter::renderGlyphs(QPainter& painter)
 	
 }
 
+void Presenter::layoutGlyphs(int w, int h) {
+
+	assert(layoutEngine!=NULL);
+	
+	layoutEngine->layoutGlyphs(&glyphs, w, h);
+	
+}
 
 

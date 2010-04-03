@@ -18,6 +18,7 @@
 #include <QtGui>
 #include "Presenter.h"
 #include "RenderingSurface.h"
+#include "GridLayoutEngine.h"
 
 class MainWindow : public QMainWindow {
 	
@@ -29,6 +30,8 @@ private:
 	Presenter presenter;
 	
 	RenderingSurface renderingSurface;
+	
+	GridLayoutEngine layoutEngine;
 	
 	bool isFullscreen;
 

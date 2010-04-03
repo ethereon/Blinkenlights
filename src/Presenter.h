@@ -17,6 +17,7 @@
 #include <QtGui>
 #include "Glyph.h"
 #include <vector>
+#include "LayoutEngine.h"
 
 class RenderingSurface;
 
@@ -30,9 +31,10 @@ private:
 	volatile bool isStopped;
 	
 	std::vector<Glyph*> glyphs;
-	int spacing;
 	
 	RenderingSurface* renderingSurface;
+	
+	LayoutEngine* layoutEngine;
 	
 	
 signals:
@@ -46,13 +48,18 @@ public:
 	~Presenter();
 
 	void run();
+	
 	void stop();
 	
 	void setRenderingSurface(RenderingSurface* argSurface);
+	
 	void setGlyphs(const std::vector<Glyph*> &argGlyphs);
-	void setSpacing(int argSpacing);
-	void layoutGlyphs(int w, int h);
+
+	void setLayoutEngine(LayoutEngine* engine);
+	
 	void renderGlyphs(QPainter& painter);
+	
+	void layoutGlyphs(int w, int h);
 	
 };
 
