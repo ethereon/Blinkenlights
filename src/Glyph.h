@@ -16,7 +16,7 @@
 
 #include <QtGui>
 #include <time.h>
-
+#include "StateController.h"
 
 class Glyph : public QObject {
 	
@@ -29,8 +29,9 @@ protected:
 	
 	double frequency;
 	
-	bool state;
+	int state;
 	
+	StateController* stateController;
 	
 	int rX,rY,rWidth,rHeight;
 	
@@ -39,7 +40,7 @@ protected:
 	
 public slots:
 	
-	void toggleState();
+	void nextState();
 	
 	
 public:
@@ -55,6 +56,7 @@ public:
 	void stop();
 	
 	void setDimensions(int argX, int argY, int argW, int argH); 
+	void setStateController(StateController* sc) { stateController = sc; }
 	
 	virtual void render(QPainter* painter) = 0;
 	

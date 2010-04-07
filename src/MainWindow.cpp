@@ -14,6 +14,7 @@
 #include "MainWindow.h"
 #include "CheckerboardGlyph.h"
 #include "RectGlyph.h"
+#include "BinaryOscillator.h"
 
 #include <vector>
 
@@ -21,12 +22,14 @@ using namespace std;
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 	
-		
-	double frequencies[] = {7.5,6,10,14};
+	//TODO:Create GUI to do this. Free allocated objects
+
+	double frequencies[] = {10};
 	
-	int glyphCount = 4;
+	int glyphCount = 1;
 	
-	CheckerboardGlyph* boards = new CheckerboardGlyph[glyphCount];		
+//	CheckerboardGlyph* boards = new CheckerboardGlyph[glyphCount];		
+	RectGlyph* boards = new RectGlyph[glyphCount];
 
 	vector<Glyph*> glyphs;
 	
@@ -43,7 +46,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 	this->setCentralWidget(&renderingSurface);
 	
 	presenter.setRenderingSurface(&renderingSurface);
-	presenter.start();//&renderingSurface);
+	presenter.start();
 
 	isFullscreen = false;
 	

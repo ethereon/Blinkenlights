@@ -17,6 +17,8 @@
 #include <assert.h>
 #include "RenderingSurface.h"
 #include "HiResTime.h"
+#include "BinaryOscillator.h"
+#include "MSequence.h"
 
 using namespace std;
 
@@ -58,12 +60,18 @@ void Presenter::run() {
 	assert(n!=0);
 	assert(renderingSurface!=NULL);
 	assert(layoutEngine!=NULL);
+
 	
 	renderingSurface->setPresenter(this);
 		
-	for(int i=0; i<n; ++i)
+	for(int i=0; i<n; ++i) {
+	
+		//TODO: Free state Controllers
+		glyphs[i]->setStateController(new MSequence());
 		glyphs[i]->start();
 
+	}
+	
 	isStopped = false;
 	
 	connect(this, SIGNAL(glyphStateChanged()), renderingSurface, SLOT(repaint()));
@@ -84,7 +92,7 @@ void Presenter::run() {
 			
 			if(delay>glyphs[i]->getTransitionInterval()) {
 				
-				glyphs[i]->toggleState();
+				glyphs[i]->nextState();
 				epochs[i] = currentTime;
 				emit glyphStateChanged();
 			}

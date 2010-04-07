@@ -13,6 +13,7 @@
 
 
 #include "Glyph.h"
+#include <assert.h>
 
 #ifdef _WIN32
 #include <sys/time.h>
@@ -23,6 +24,8 @@ Glyph::Glyph(QObject* parent) : QObject(parent)
 	
 	state = 0;
 
+	stateController = NULL;
+	
 	this->setDimensions(0, 0, 100, 100);
 	
 }
@@ -31,10 +34,10 @@ Glyph::~Glyph() {
 	
 }
 
-void Glyph::toggleState() {
+void Glyph::nextState() {
 	
 
-	state = !state;
+	state = stateController->getNextState();
 	
 }
 
@@ -62,7 +65,9 @@ void Glyph::setDimensions(int argX, int argY, int argW, int argH) {
 
 void Glyph::start() {
 
+	assert(stateController!=NULL);
 	
+	stateController->start();
 	this->onStarting();
 	
 }

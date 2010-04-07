@@ -57,6 +57,7 @@ public:
 
 	void setLayoutEngine(LayoutEngine* engine);
 	
+	
 	void renderGlyphs(QPainter& painter);
 	
 	void layoutGlyphs(int w, int h);
