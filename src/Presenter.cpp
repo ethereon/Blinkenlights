@@ -67,7 +67,7 @@ void Presenter::run() {
 	for(int i=0; i<n; ++i) {
 	
 		//TODO: Free state Controllers
-		glyphs[i]->setStateController(new MSequence());
+		glyphs[i]->setStateController(new BinaryOscillator());
 		glyphs[i]->start();
 
 	}

@@ -24,12 +24,13 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 	
 	//TODO:Create GUI to do this. Free allocated objects
 
-	double frequencies[] = {10};
+	double frequencies[] = {6.5, 5.5, 4.5, 3.5};
+	//double frequencies[] = {10};
 	
-	int glyphCount = 1;
+	int glyphCount = 4;
 	
-//	CheckerboardGlyph* boards = new CheckerboardGlyph[glyphCount];		
-	RectGlyph* boards = new RectGlyph[glyphCount];
+	CheckerboardGlyph* boards = new CheckerboardGlyph[glyphCount];		
+	//RectGlyph* boards = new RectGlyph[glyphCount];
 
 	vector<Glyph*> glyphs;
 	
